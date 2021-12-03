@@ -1,0 +1,2 @@
+class ParserOutput:
+    pass
