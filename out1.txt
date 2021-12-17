@@ -1,0 +1,146 @@
+
+state State.NORMAL
+position:0
+working stack: []
+input stack: ['S']
+
+expand
+
+state State.NORMAL
+position:0
+working stack: [['S', 0]]
+input stack: ['a', 'S', 'b', 'S']
+
+advance
+
+state State.NORMAL
+position:1
+working stack: [['S', 0], 'a']
+input stack: ['S', 'b', 'S']
+
+expand
+
+state State.NORMAL
+position:1
+working stack: [['S', 0], 'a', ['S', 0]]
+input stack: ['a', 'S', 'b', 'S', 'b', 'S']
+
+momentary insuccess
+
+state State.BACK
+position:1
+working stack: [['S', 0], 'a', ['S', 0]]
+input stack: ['a', 'S', 'b', 'S', 'b', 'S']
+
+another_try
+
+state State.NORMAL
+position:1
+working stack: [['S', 0], 'a', ['S', 1]]
+input stack: ['a', 'S', 'b', 'S']
+
+momentary insuccess
+
+state State.BACK
+position:1
+working stack: [['S', 0], 'a', ['S', 1]]
+input stack: ['a', 'S', 'b', 'S']
+
+another_try
+
+state State.NORMAL
+position:1
+working stack: [['S', 0], 'a', ['S', 2]]
+input stack: ['c', 'b', 'S']
+
+advance
+
+state State.NORMAL
+position:2
+working stack: [['S', 0], 'a', ['S', 2], 'c']
+input stack: ['b', 'S']
+
+momentary insuccess
+
+state State.BACK
+position:2
+working stack: [['S', 0], 'a', ['S', 2], 'c']
+input stack: ['b', 'S']
+
+back
+
+state State.BACK
+position:1
+working stack: [['S', 0], 'a', ['S', 2]]
+input stack: ['c', 'b', 'S']
+
+another_try
+
+state State.BACK
+position:1
+working stack: [['S', 0], 'a']
+input stack: ['S', 'b', 'S']
+
+back
+
+state State.BACK
+position:0
+working stack: [['S', 0]]
+input stack: ['a', 'S', 'b', 'S']
+
+another_try
+
+state State.NORMAL
+position:0
+working stack: [['S', 1]]
+input stack: ['a', 'S']
+
+advance
+
+state State.NORMAL
+position:1
+working stack: [['S', 1], 'a']
+input stack: ['S']
+
+expand
+
+state State.NORMAL
+position:1
+working stack: [['S', 1], 'a', ['S', 0]]
+input stack: ['a', 'S', 'b', 'S']
+
+momentary insuccess
+
+state State.BACK
+position:1
+working stack: [['S', 1], 'a', ['S', 0]]
+input stack: ['a', 'S', 'b', 'S']
+
+another_try
+
+state State.NORMAL
+position:1
+working stack: [['S', 1], 'a', ['S', 1]]
+input stack: ['a', 'S']
+
+momentary insuccess
+
+state State.BACK
+position:1
+working stack: [['S', 1], 'a', ['S', 1]]
+input stack: ['a', 'S']
+
+another_try
+
+state State.NORMAL
+position:1
+working stack: [['S', 1], 'a', ['S', 2]]
+input stack: ['c']
+
+advance
+
+state State.NORMAL
+position:2
+working stack: [['S', 1], 'a', ['S', 2], 'c']
+input stack: []
+

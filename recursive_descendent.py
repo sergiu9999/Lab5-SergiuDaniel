@@ -1,6 +1,8 @@
 from grammar import Grammar
 from enum import Enum
 
+from tree import LabeledTree
+
 
 class State(Enum):
     NORMAL = "q"
@@ -9,7 +11,7 @@ class State(Enum):
     ERROR = "e"
 
 
-class Recursive_descendent:
+class RecursiveDescendent:
     def __init__(self, grammar: Grammar, sequence) -> None:
         self.state = State.NORMAL
         self.grammar = grammar
@@ -17,27 +19,33 @@ class Recursive_descendent:
         self.position = 0
         self.working_stack = []
         self.input_stack = [grammar.get_starting_symbol()]
+        self.f = open("out1.txt", "a")
 
     def expand(self):
+        self.f.write("expand" + '\n')
         non_terminal = self.input_stack[0]
         production = self.grammar.productions[non_terminal][0]
         self.working_stack.append([non_terminal, 0])
         self.input_stack = production + self.input_stack[1:]
 
     def advance(self):
+        self.f.write("advance" + '\n')
         self.position += 1
         self.working_stack.append(self.input_stack[0])
         self.input_stack = self.input_stack[1:]
 
     def momentary_insuccess(self):
+        self.f.write("momentary insuccess" + '\n')
         self.state = State.BACK
 
     def back(self):
+        self.f.write("back" + '\n')
         self.position -= 1
         self.input_stack = [self.working_stack[-1]] + self.input_stack
         self.working_stack.pop()
 
     def another_try(self):
+        self.f.write("another_try" + '\n')
         non_terminal, production_number = self.working_stack[-1]
 
         if production_number < len(self.grammar.productions[non_terminal]) - 1:
@@ -58,6 +66,7 @@ class Recursive_descendent:
             self.input_stack = [non_terminal] + self.input_stack[pop_length:]
 
     def success(self):
+        self.f.write("success" + '\n')
         self.state = State.FINAL
 
     def get_production_string(self):
@@ -68,8 +77,26 @@ class Recursive_descendent:
             production_string += f"{elem[0]}{elem[1]} "
         return production_string
 
+    def get_parsing_tree(self):
+        production_tree = LabeledTree()
+        for node_index, elem in enumerate(self.working_stack):
+            if elem in self.grammar.get_terminals():
+                production_tree.add_label(node_index, elem)
+                continue
+            production_tree.add_label(node_index, elem[0])
+            children_labels = self.grammar.productions[elem[0]][elem[1]]
+            for child_index, child in enumerate(children_labels):
+                production_tree.add_son(node_index, node_index + child_index)
+        return production_tree.get_table()
+
     def start(self):
         while self.state not in [State.FINAL, State.ERROR]:
+
+            self.f.write('\n' + f"state {self.state}" + "\n")
+            self.f.write(f"position:{self.position}" + "\n")
+            self.f.write(f"working stack: {self.working_stack}" + "\n")
+            self.f.write(f"input stack: {self.input_stack}" + "\n")
+            self.f.write("\n")
 
             if self.state == State.NORMAL:
                 if self.position == len(self.sequence) and len(self.input_stack) == 0:
